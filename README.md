@@ -2,8 +2,8 @@
 First person maze game
 
 # Todo
-list of hotkeys
-write some documentation
+list of hotkeys<br>
+write some documentation<br>
 
 
 
