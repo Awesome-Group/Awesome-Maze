@@ -1,7 +1,7 @@
 # Awesome-Maze
 First person maze game
 
-# Todod
+# Todo
 list of hotkeys
 write some documentation
 
