@@ -1,6 +1,12 @@
 # Awesome-Maze
 First person maze game
 
+# Todod
+list of hotkeys
+write some documentation
+
+
+
 # Licensing
 Files within the "source code" and "source documentation" folders will be
 published under the MIT License. Files within the "game" folder will be
