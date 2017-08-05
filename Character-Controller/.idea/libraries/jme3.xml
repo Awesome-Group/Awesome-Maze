@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="jme3">
+    <CLASSES>
+      <root url="file://$USER_HOME$/Documents/jME3.1-stable/lib" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="file://$USER_HOME$/Documents/jME3.1-stable/javadoc" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="file://$USER_HOME$/Documents/jME3.1-stable/sources" />
+    </SOURCES>
+    <jarDirectory url="file://$USER_HOME$/Documents/jME3.1-stable/lib" recursive="false" />
+    <jarDirectory url="file://$USER_HOME$/Documents/jME3.1-stable/sources" recursive="false" type="SOURCES" />
+  </library>
+</component>
