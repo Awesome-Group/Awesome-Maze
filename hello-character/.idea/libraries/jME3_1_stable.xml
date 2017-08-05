@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="jME3.1-stable">
+    <CLASSES>
+      <root url="file://C:/Program Files/jME3.1-stable/lib" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="file://C:/Program Files/jME3.1-stable/javadoc" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="file://C:/Program Files/jME3.1-stable/sources" />
+    </SOURCES>
+    <jarDirectory url="file://C:/Program Files/jME3.1-stable/lib" recursive="false" />
+    <jarDirectory url="file://C:/Program Files/jME3.1-stable/sources" recursive="false" type="SOURCES" />
+  </library>
+</component>
