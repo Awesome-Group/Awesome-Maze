@@ -3,7 +3,6 @@ import com.jme3.asset.plugins.ZipLocator;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
-import com.jme3.bullet.control.BetterCharacterControl;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
@@ -22,8 +21,7 @@ public class Driver extends SimpleApplication implements ActionListener
     private Spatial sceneModel;
     private BulletAppState bulletAppState;
     private RigidBodyControl landscape;
-    //private CharacterControl player;
-    private BetterCharacterControl betterPlayer;
+    private CharacterControl player;
     private Vector3f walkDirection = new Vector3f();
     private boolean left = false, right = false, up = false, down = false;
 
@@ -67,22 +65,20 @@ public class Driver extends SimpleApplication implements ActionListener
         // The CharacterControl offers extra settings for
         // size, stepheight, jumping, falling, and gravity.
         // We also put the player in its starting position.
-        /*
+
         CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(1.5f, 6f, 1);
         player = new CharacterControl(capsuleShape, 0.05f);
         player.setJumpSpeed(20);
         player.setFallSpeed(30);
         player.setGravity(30);
         player.setPhysicsLocation(new Vector3f(0, 10, 0));
-        */
-        betterPlayer = new BetterCharacterControl(1f, 1f, 60f);
 
 
         // We attach the scene and the player to the rootnode and the physics space,
         // to make them appear in the game world.
         rootNode.attachChild(sceneModel);
         bulletAppState.getPhysicsSpace().add(landscape);
-        bulletAppState.getPhysicsSpace().add(betterPlayer);
+        bulletAppState.getPhysicsSpace().add(player);
         bulletAppState.setDebugEnabled(true);
     }
 
@@ -128,7 +124,7 @@ public class Driver extends SimpleApplication implements ActionListener
         } else if (binding.equals("Down")) {
             down = isPressed;
         } else if (binding.equals("Jump")) {
-            if (isPressed) { betterPlayer.jump(); }
+            //if (isPressed) { player.jump(); }
         }
     }
 
@@ -140,30 +136,6 @@ public class Driver extends SimpleApplication implements ActionListener
      * We also make sure here that the camera moves with player.
      */
 
-    @Override
-    public void simpleUpdate(float tpf)
-    {
-        camDir.set(cam.getDirection().multLocal(0.6f));
-        camLeft.set(cam.getLeft().multLocal(0.4f));
-
-        walkDirection.set(0, 0, 0);
-        if (left) {
-            walkDirection.addLocal(camLeft);
-        }
-        if (right) {
-            walkDirection.addLocal(camLeft.negate());
-        }
-        if (up) {
-            walkDirection.addLocal(camDir);
-        }
-        if (down) {
-            walkDirection.addLocal(camDir.negate());
-        }
-        betterPlayer.setWalkDirection(walkDirection);
-        //cam.setLocation(betterPlayer.getWalkDirection());
-    }
-
-    /*
     @Override
     public void simpleUpdate(float tpf) {
         camDir.set(cam.getDirection()).multLocal(0.6f);
@@ -184,5 +156,5 @@ public class Driver extends SimpleApplication implements ActionListener
         player.setWalkDirection(walkDirection);
         cam.setLocation(player.getPhysicsLocation());
     }
-    */
+
 }
