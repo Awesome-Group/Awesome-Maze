@@ -30,6 +30,9 @@ public class Driver extends SimpleApplication implements ActionListener
     private Vector3f camDir = new Vector3f();
     private Vector3f camLeft = new Vector3f();
 
+    private Vector3f xDirection = new Vector3f();
+    private Vector3f zDirection = new Vector3f();
+
     private float walkSpeedFactor;
     private float runSpeedFactor;
     private float currentSpeedFactor;
@@ -73,6 +76,7 @@ public class Driver extends SimpleApplication implements ActionListener
         assetManager.registerLocator("town.zip", ZipLocator.class);
         sceneModel = assetManager.loadModel("main.scene");
         sceneModel.setLocalScale(2f);
+        sceneModel.setLocalTranslation(1, 1, 1);
 
         // We set up collision detection for the scene by creating a
         // compound collision shape and a static RigidBodyControl with mass zero.
@@ -193,6 +197,14 @@ public class Driver extends SimpleApplication implements ActionListener
         // Sets the player walk direction and resets the cam location to where the player is now.
         player.setWalkDirection(walkDirection);
         cam.setLocation(player.getPhysicsLocation());
+
+        //xDirection.set(cam.getDirection().getX(), 0f, 0f );
+        //zDirection.set(sceneModel.getLocalTranslation().getX(), 0f, 0f);
+
+        xDirection.set(0f, cam.getDirection().getY(), 0f);
+        zDirection.set(0f, sceneModel.getLocalTranslation().getY(), 0f);
+        System.out.println(cam.getDirection().getX());
+        //System.out.println(cam.getLocation());
     }
 
 }
