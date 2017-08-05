@@ -7,6 +7,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="jme3" level="project" />
+    <orderEntry type="library" name="jME3.1-stable" level="project" />
   </component>
 </module>
