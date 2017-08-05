@@ -59,9 +59,9 @@ public class Driver extends SimpleApplication implements ActionListener
         /* These are the default run and walk speed in (w/s) which is
         *  world unit/second. We also set the move speed according to
         *  what mode are we on.*/
-        runSpeed = 100f;
-        walkSpeed = 50f;
-        flyCam.setMoveSpeed(runSpeed);
+        runSpeed = 20f;
+        walkSpeed = 0f;
+        flyCam.setMoveSpeed(100f);
 
         // We re-use the flyby camera for rotation, while positioning is handled by physics
         viewPort.setBackgroundColor(new ColorRGBA(0.7f, 0.8f, 1f, 1f));
@@ -94,8 +94,9 @@ public class Driver extends SimpleApplication implements ActionListener
         player.setPhysicsLocation(new Vector3f(0, 10, 0));
 
 
-        // We attach the scene and the player to the rootnode and the physics space,
-        // to make them appear in the game world.
+        /*We attach the scene and the player to the rootnode and the physics space,
+        * to make them appear in the game world. Note that you have to add all kinds of physics
+        * control to the physics space for them to have physics.*/
         rootNode.attachChild(sceneModel);
         bulletAppState.getPhysicsSpace().add(landscape);
         bulletAppState.getPhysicsSpace().add(player);
@@ -137,6 +138,7 @@ public class Driver extends SimpleApplication implements ActionListener
         } else if (binding.equals("Down")) {
             down = isPressed;
         } else if (binding.equals("Jump")) {
+            // Jump functionality not determined yet
             //if (isPressed) { player.jump(); }
         }
     }
@@ -151,8 +153,16 @@ public class Driver extends SimpleApplication implements ActionListener
 
     @Override
     public void simpleUpdate(float tpf) {
-        camDir.set(cam.getDirection()).multLocal(0.6f);
+        /* The up and down movement has been allowed only in the x and z direction because
+        * changing all direction would enable to player to jump awkwardly.*/
+        camDir.setX(cam.getDirection().getX() * 0.4f);
+        camDir.setZ(cam.getDirection().getZ() * 0.4f);
+        camDir.setY(0f);
+
         camLeft.set(cam.getLeft()).multLocal(0.4f);
+
+        /* The multiple if statements helps us determine which position the character wants to walk
+         * in. The walk direction is calculated based on the boolean values determined by the onAction method.*/
         walkDirection.set(0, 0, 0);
         if (left) {
             walkDirection.addLocal(camLeft);
@@ -166,6 +176,8 @@ public class Driver extends SimpleApplication implements ActionListener
         if (down) {
             walkDirection.addLocal(camDir.negate());
         }
+
+        // Sets the player walk direction and resets the cam location to where the player is now.
         player.setWalkDirection(walkDirection);
         cam.setLocation(player.getPhysicsLocation());
     }
