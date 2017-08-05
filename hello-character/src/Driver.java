@@ -26,25 +26,45 @@ public class Driver extends SimpleApplication implements ActionListener
     private boolean left = false, right = false, up = false, down = false;
 
     //Temporary vectors used on each frame.
-    //They here to avoid instanciating new vectors on each frame
+    //They here to avoid instanciating new vectors on each frame.
     private Vector3f camDir = new Vector3f();
     private Vector3f camLeft = new Vector3f();
 
+    private float walkSpeed;
+    private float runSpeed;
+
     public static void main(String[] args)
     {
+        /*This is where the program starts and calls the start() method
+          which runs the simpleInitApp() method.
+        */
         Driver driver = new Driver();
         driver.start();
     }
 
-    public void simpleInitApp() {
-        /** Set up Physics */
+    public void simpleInitApp()
+    {
+        /** The BulletAppState gives our application access to physics features,
+         *  such as collision detection. It is integerated by the jME's jBullet integeration
+         *  which is an external physics engine. This piece of code is required in every
+         *  application that works with physics.*/
         bulletAppState = new BulletAppState();
         stateManager.attach(bulletAppState);
+
+
+        /** The debug feature shows us the wireframes of the mesh renderer.
+         *  This should be enabled for debugging only.*/
         //bulletAppState.setDebugEnabled(true);
+
+        /* These are the default run and walk speed in (w/s) which is
+        *  world unit/second. We also set the move speed according to
+        *  what mode are we on.*/
+        runSpeed = 100f;
+        walkSpeed = 50f;
+        flyCam.setMoveSpeed(runSpeed);
 
         // We re-use the flyby camera for rotation, while positioning is handled by physics
         viewPort.setBackgroundColor(new ColorRGBA(0.7f, 0.8f, 1f, 1f));
-        flyCam.setMoveSpeed(100);
         setUpKeys();
         setUpLight();
 
@@ -103,13 +123,6 @@ public class Driver extends SimpleApplication implements ActionListener
         inputManager.addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
         inputManager.addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
         inputManager.addListener(this, "Left", "Right", "Up", "Down", "Jump");
-        /*
-        inputManager.addListener(this, "Left");
-        inputManager.addListener(this, "Right");
-        inputManager.addListener(this, "Up");
-        inputManager.addListener(this, "Down");
-        inputManager.addListener(this, "Jump");
-        */
     }
 
     /** These are our custom actions triggered by key presses.
