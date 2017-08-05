@@ -23,15 +23,16 @@ public class Driver extends SimpleApplication implements ActionListener
     private RigidBodyControl landscape;
     private CharacterControl player;
     private Vector3f walkDirection = new Vector3f();
-    private boolean left = false, right = false, up = false, down = false;
+    private boolean left = false, right = false, up = false, down = false, run = false;
 
     //Temporary vectors used on each frame.
     //They here to avoid instanciating new vectors on each frame.
     private Vector3f camDir = new Vector3f();
     private Vector3f camLeft = new Vector3f();
 
-    private float walkSpeed;
-    private float runSpeed;
+    private float walkSpeedFactor;
+    private float runSpeedFactor;
+    private float currentSpeedFactor;
 
     public static void main(String[] args)
     {
@@ -56,17 +57,17 @@ public class Driver extends SimpleApplication implements ActionListener
          *  This should be enabled for debugging only.*/
         //bulletAppState.setDebugEnabled(true);
 
-        /* These are the default run and walk speed in (w/s) which is
-        *  world unit/second. We also set the move speed according to
+        /* These are the default run and walk speed factors. We also set the move speed according to
         *  what mode are we on.*/
-        runSpeed = 20f;
-        walkSpeed = 0f;
-        flyCam.setMoveSpeed(100f);
+        runSpeedFactor = 0.6f;
+        walkSpeedFactor = 0.3f;
+        currentSpeedFactor = walkSpeedFactor;
 
         // We re-use the flyby camera for rotation, while positioning is handled by physics
         viewPort.setBackgroundColor(new ColorRGBA(0.7f, 0.8f, 1f, 1f));
         setUpKeys();
         setUpLight();
+        flyCam.setMoveSpeed(100f);
 
         // We load the scene from the zip file and adjust its size.
         assetManager.registerLocator("town.zip", ZipLocator.class);
@@ -123,7 +124,8 @@ public class Driver extends SimpleApplication implements ActionListener
         inputManager.addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
         inputManager.addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
         inputManager.addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
-        inputManager.addListener(this, "Left", "Right", "Up", "Down", "Jump");
+        inputManager.addMapping("Run", new KeyTrigger(KeyInput.KEY_LSHIFT));
+        inputManager.addListener(this, "Left", "Right", "Up", "Down", "Jump", "Run");
     }
 
     /** These are our custom actions triggered by key presses.
@@ -140,6 +142,8 @@ public class Driver extends SimpleApplication implements ActionListener
         } else if (binding.equals("Jump")) {
             // Jump functionality not determined yet
             //if (isPressed) { player.jump(); }
+        } else if(binding.equals("Run")){
+            run = isPressed;
         }
     }
 
@@ -153,13 +157,22 @@ public class Driver extends SimpleApplication implements ActionListener
 
     @Override
     public void simpleUpdate(float tpf) {
+        if(run)
+        {
+            currentSpeedFactor = runSpeedFactor;
+        }
+        else
+        {
+            currentSpeedFactor = walkSpeedFactor;
+        }
+
         /* The up and down movement has been allowed only in the x and z direction because
         * changing all direction would enable to player to jump awkwardly.*/
-        camDir.setX(cam.getDirection().getX() * 0.4f);
-        camDir.setZ(cam.getDirection().getZ() * 0.4f);
+        camDir.setX(cam.getDirection().getX() * currentSpeedFactor);
+        camDir.setZ(cam.getDirection().getZ() * currentSpeedFactor);
         camDir.setY(0f);
 
-        camLeft.set(cam.getLeft()).multLocal(0.4f);
+        camLeft.set(cam.getLeft()).multLocal(currentSpeedFactor);
 
         /* The multiple if statements helps us determine which position the character wants to walk
          * in. The walk direction is calculated based on the boolean values determined by the onAction method.*/
