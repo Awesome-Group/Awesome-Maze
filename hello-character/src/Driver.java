@@ -16,6 +16,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.system.AppSettings;
+import org.lwjgl.Sys;
 
 public class Driver extends SimpleApplication implements ActionListener
 {
@@ -163,12 +164,13 @@ public class Driver extends SimpleApplication implements ActionListener
           
           //xDirection.set(cam.getDirection().getX(), 0f, 0f );
           //zDirection.set(sceneModel.getLocalTranslation().getX(), 0f, 0f);
-          
-          xDirection.set(0f, cam.getDirection().getZ(), 0f);
-          zDirection.set(0f, cam.getLocation().getY(), 0f);
-          Vector3f zNormalize = new Vector3f(zDirection.normalizeLocal());
-          //System.out.println(cam.getDirection().getX());
-          System.out.println(xDirection.dot(zNormalize));
+          //System.out.println(cam.getUp());
+
+          // Restricts camera rotation for first person viewing
+          if(cam.getDirection().getY() > 0.80)
+               cam.lookAtDirection(new Vector3f(cam.getDirection().getX(),0.80f,cam.getDirection().getZ()),new Vector3f(cam.getUp().getX(),1,cam.getUp().getZ()));
+          if(cam.getDirection().getY() < -0.80)
+               cam.lookAtDirection(new Vector3f(cam.getDirection().getX(),-0.80f,cam.getDirection().getZ()),new Vector3f(cam.getUp().getX(),1,cam.getUp().getZ()));
      }
 
 
