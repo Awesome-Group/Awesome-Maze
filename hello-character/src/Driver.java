@@ -59,6 +59,7 @@ public class Driver extends SimpleApplication implements ActionListener
          */
           runSpeedFactor = 0.6f;
           walkSpeedFactor = 0.3f;
+          
           currentSpeedFactor = walkSpeedFactor;
           
           // We re-use the flyby camera for rotation, while positioning is handled by physics
@@ -163,10 +164,11 @@ public class Driver extends SimpleApplication implements ActionListener
           //xDirection.set(cam.getDirection().getX(), 0f, 0f );
           //zDirection.set(sceneModel.getLocalTranslation().getX(), 0f, 0f);
           
-          xDirection.set(0f, cam.getDirection().getY(), 0f);
-          zDirection.set(0f, sceneModel.getLocalTranslation().getY(), 0f);
+          xDirection.set(0f, cam.getDirection().getZ(), 0f);
+          zDirection.set(0f, cam.getLocation().getY(), 0f);
+          Vector3f zNormalize = new Vector3f(zDirection.normalizeLocal());
           //System.out.println(cam.getDirection().getX());
-          //System.out.println(cam.getLocation());
+          System.out.println(xDirection.dot(zNormalize));
      }
 
 
