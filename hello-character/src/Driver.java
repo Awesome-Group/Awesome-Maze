@@ -30,7 +30,7 @@ public class Driver extends SimpleApplication implements ActionListener
           settings.put("Width", 1280);
           settings.put("Height", 720);
           settings.put("Title", "Awesome Maze");
-          settings.put("VSync", true);
+          settings.put("VSync", false);
           // Anti-Aliasing
           settings.put("Samples", 4);
           
@@ -184,39 +184,43 @@ public class Driver extends SimpleApplication implements ActionListener
      @Override
      public void onAction( String name, boolean isPressed, float tpf )
      {
+          // isPressed: no preference
           if ( name.equals("Left") )
           {
                left = isPressed;
           }
-          else
-               if ( name.equals("Right") )
-               {
-                    right = isPressed;
-               }
-               else
-                    if ( name.equals("Up") )
-                    {
-                         up = isPressed;
-                    }
-                    else
-                         if ( name.equals("Down") )
-                         {
-                              down = isPressed;
-                         }
-                         else
-                              if ( name.equals("Jump") )
-                              {
-                                   // Jump functionality not determined yet
-                                   //if (isPressed) { player.jump(); }
-                              }
-                              else
-                                   if ( name.equals("Run") )
-                                   {
-                                        run = isPressed;
-                                   }
+          if ( name.equals("Right") )
+          {
+               right = isPressed;
+          }
+          if ( name.equals("Up") )
+          {
+               up = isPressed;
+          }
+          if ( name.equals("Down") )
+          {
+               down = isPressed;
+          }
+          if ( name.equals("Jump") )
+          {
+               // Jump functionality not determined yet
+               //if (isPressed) { player.jump(); }
+          }
+          if ( name.equals("Run") )
+          {
+               run = isPressed;
+          }
+          
+          // isPressed: true
+          if ( name.equals("Pause") && isPressed )
+          {
+               flipCamEnable();
+          }
      }
      
+     
      // private:
+     
      
      private void setUpLight()
      {
@@ -236,22 +240,38 @@ public class Driver extends SimpleApplication implements ActionListener
       */
      private void setUpKeys()
      {
+          // TODO
+          // this looks like a terrible way to map keys
+          // we should create a helper function for it
+          
           inputManager.addMapping("Left", new KeyTrigger(KeyInput.KEY_A));
           inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
           inputManager.addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
           inputManager.addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
           inputManager.addMapping("Jump", new KeyTrigger(KeyInput.KEY_SPACE));
           inputManager.addMapping("Run", new KeyTrigger(KeyInput.KEY_LSHIFT));
-          inputManager.addListener(this, "Left", "Right", "Up", "Down", "Jump", "Run");
+          inputManager.addMapping("Pause", new KeyTrigger(KeyInput.KEY_P));
+          inputManager.addListener(this, "Left", "Right", "Up", "Down", "Jump", "Run", "Pause");
      }
      
+     private void flipCamEnable()
+     {
+          boolean value = flyCam.isEnabled();
+          inputManager.setCursorVisible(value);
+          flyCam.setEnabled(!value);
+     }
      
      private Spatial sceneModel;
      private BulletAppState bulletAppState;
      private RigidBodyControl landscape;
      private CharacterControl player;
      private Vector3f walkDirection = new Vector3f();
-     private boolean left = false, right = false, up = false, down = false, run = false;
+     private boolean
+               left = false,
+               right = false,
+               up = false,
+               down = false,
+               run = false;
      
      //Temporary vectors used on each frame.
      //They here to avoid instanciating new vectors on each frame.
