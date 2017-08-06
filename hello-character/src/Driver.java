@@ -161,16 +161,11 @@ public class Driver extends SimpleApplication implements ActionListener
           // Sets the player walk direction and resets the cam location to where the player is now.
           player.setWalkDirection(walkDirection);
           cam.setLocation(player.getPhysicsLocation());
+          restrictCameraRotation();
           
           //xDirection.set(cam.getDirection().getX(), 0f, 0f );
           //zDirection.set(sceneModel.getLocalTranslation().getX(), 0f, 0f);
           //System.out.println(cam.getUp());
-
-          // Restricts camera rotation for first person viewing
-          if(cam.getDirection().getY() > 0.80)
-               cam.lookAtDirection(new Vector3f(cam.getDirection().getX(),0.80f,cam.getDirection().getZ()),new Vector3f(cam.getUp().getX(),1,cam.getUp().getZ()));
-          if(cam.getDirection().getY() < -0.80)
-               cam.lookAtDirection(new Vector3f(cam.getDirection().getX(),-0.80f,cam.getDirection().getZ()),new Vector3f(cam.getUp().getX(),1,cam.getUp().getZ()));
      }
 
 
@@ -237,6 +232,16 @@ public class Driver extends SimpleApplication implements ActionListener
           dl.setColor(ColorRGBA.White);
           dl.setDirection(new Vector3f(2.8f, -2.8f, -2.8f).normalizeLocal());
           rootNode.addLight(dl);
+     }
+
+     private void restrictCameraRotation()
+     {
+          // Restricts camera rotation for first person viewing
+          // May need to create a variable to store the y-axis at which the rotation should stop
+          if(cam.getDirection().getY() > 0.80)
+               cam.lookAtDirection(new Vector3f(cam.getDirection().getX(),0.80f,cam.getDirection().getZ()),new Vector3f(cam.getUp().getX(),1,cam.getUp().getZ()));
+          if(cam.getDirection().getY() < -0.80)
+               cam.lookAtDirection(new Vector3f(cam.getDirection().getX(),-0.80f,cam.getDirection().getZ()),new Vector3f(cam.getUp().getX(),1,cam.getUp().getZ()));
      }
      
      /* We over-write some navigational key mappings here, so we can
