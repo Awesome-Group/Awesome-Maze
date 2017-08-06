@@ -66,6 +66,6 @@ public class FlyByCamera extends com.jme3.input.FlyByCamera
           }
      }
 
-     private float restrictAmount = 1.0f;
+     private float restrictAmount = 1.5708f;
 
 }
