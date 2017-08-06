@@ -56,16 +56,16 @@ public class FlyByCamera extends com.jme3.input.FlyByCamera
           q.normalizeLocal();
 
           // Gets the euler angles from the quaternion rotation (x, y , z)
-          float[] angles = new float[3];
-          q.toAngles(angles);
+          float[] eulerAngles = new float[3];
+          q.toAngles(eulerAngles);
 
-          // Sets the camera axis of view only if the x direction rotation is within the amount
-          if(angles[0] < restrictAmount && angles[0] > -restrictAmount)
+          // Sets the camera axis of view only if the x direction rotation is within the angle (in radians)
+          if(eulerAngles[0] < rAngle && eulerAngles[0] > -rAngle)
           {
               cam.setAxes(q);
           }
      }
 
-     private float restrictAmount = 1.5708f;
+     private float rAngle = 1.5708f;
 
 }
