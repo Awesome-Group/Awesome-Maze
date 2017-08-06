@@ -19,7 +19,8 @@ public class FlyByCamera extends com.jme3.input.FlyByCamera
      {
           super(cam);
      }
-     
+
+
      @Override
      protected void rotateCamera( float value, Vector3f axis )
      {
@@ -59,11 +60,12 @@ public class FlyByCamera extends com.jme3.input.FlyByCamera
           q.toAngles(angles);
 
           // Sets the camera axis of view only if the x direction rotation is within the amount
-          if(angles[0] < restrictAmount && angles[0] > restrictAmount)
+          if(angles[0] < restrictAmount && angles[0] > -restrictAmount)
           {
               cam.setAxes(q);
           }
      }
 
      private float restrictAmount = 1.0f;
+
 }
