@@ -1,3 +1,4 @@
+import com.jme3.app.FlyCamAppState;
 import com.jme3.app.SimpleApplication;
 import com.jme3.asset.plugins.ZipLocator;
 import com.jme3.bullet.BulletAppState;
@@ -17,6 +18,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.system.AppSettings;
+import custom.FlyByCamera;
 import org.lwjgl.Sys;
 
 public class Driver extends SimpleApplication implements ActionListener
@@ -32,7 +34,7 @@ public class Driver extends SimpleApplication implements ActionListener
           settings.put("Width", 1280);
           settings.put("Height", 720);
           settings.put("Title", "Awesome Maze");
-          settings.put("VSync", false);
+          settings.put("VSync", true);
           // Anti-Aliasing
           settings.put("Samples", 4);
           
@@ -48,6 +50,23 @@ public class Driver extends SimpleApplication implements ActionListener
      @Override
      public void simpleInitApp()
      {
+          // Override default flyByCam
+          // We have to special-case the FlyCamAppState because too
+          // many custom.SimpleApplication subclasses expect it to exist in
+          // simpleInit().  But at least it only gets initialized if
+          // the app state is added.
+          
+          // remove default FlyCamAppState as suggested in javadocs
+          stateManager.detach(stateManager.getState(FlyCamAppState.class));
+          stateManager.attach(new custom.FlyCamAppState());
+          
+          if ( stateManager.getState(custom.FlyCamAppState.class) != null )
+          {
+               flyCam = new FlyByCamera(cam);
+               flyCam.setMoveSpeed(1f); // odd to set this here but it did it before
+               stateManager.getState(custom.FlyCamAppState.class).setCamera(flyCam);
+          }
+          
         /* The BulletAppState gives our application access to physics features,
          *  such as collision detection. It is integerated by the jME's jBullet integeration
          *  which is an external physics engine. This piece of code is required in every
@@ -163,7 +182,7 @@ public class Driver extends SimpleApplication implements ActionListener
           player.setWalkDirection(walkDirection);
           cam.setLocation(player.getPhysicsLocation());
           restrictCameraRotation();
-
+          
           //xDirection.set(cam.getDirection().getX(), 0f, 0f );
           //zDirection.set(sceneModel.getLocalTranslation().getX(), 0f, 0f);
           //System.out.println(cam.getRotation());
@@ -235,29 +254,29 @@ public class Driver extends SimpleApplication implements ActionListener
           dl.setDirection(new Vector3f(2.8f, -2.8f, -2.8f).normalizeLocal());
           rootNode.addLight(dl);
      }
-
-
+     
+     
      // Code doesn't work that well, needs changes
      private void restrictCameraRotation()
      {
           // Restricts camera rotation for first person viewing
           // May need to create a variable to store the y-axis at which the rotation should stop
-
-          if(cam.getRotation().getZ() > 0.5f && cam.getRotation().getY() < 0.87f)
+          
+          if ( cam.getRotation().getZ() > 0.5f && cam.getRotation().getY() < 0.87f )
           {
                cam.setRotation(new Quaternion(cam.getRotation().getX(), 0.87f, 0.5f, cam.getRotation().getW()));
-
+               
                //Quaternion q = new Quaternion();
                //Vector3f xDir = new Vector3f(cam.getDirection().getX(), 0f, 0f);
                //float angle = xDir.angleBetween(new Vector3f(0, cam.getDirection().getY(), 0f));
                //cam.setRotation(q.fromAngleAxis(angle, cam.getDirection()));
           }
-
-
+          
+          
           //else
-               //flyCam.setRotationSpeed(1f);
-               //cam.lookAtDirection(new Vector3f(cam.getDirection().getX(),0.80f,cam.getDirection().getZ()),new Vector3f(cam.getUp().getX(),1,cam.getUp().getZ()));
-          if(cam.getRotation().getZ() < -0.5f && cam.getRotation().getY() < 0.87f)
+          //flyCam.setRotationSpeed(1f);
+          //cam.lookAtDirection(new Vector3f(cam.getDirection().getX(),0.80f,cam.getDirection().getZ()),new Vector3f(cam.getUp().getX(),1,cam.getUp().getZ()));
+          if ( cam.getRotation().getZ() < -0.5f && cam.getRotation().getY() < 0.87f )
           {
                cam.setRotation(new Quaternion(cam.getRotation().getX(), 0.87f, -0.5f, cam.getRotation().getW()));
                //System.out.println(cam.getRotation());
@@ -266,12 +285,12 @@ public class Driver extends SimpleApplication implements ActionListener
                //float angle = xDir.angleBetween(new Vector3f(0, cam.getDirection().getY(), 0f));
                //cam.setRotation(q.fromAngleAxis(angle, cam.getDirection()));
           }
-
+          
           //else
-               //flyCam.setRotationSpeed(1f);
-               //cam.lookAtDirection(new Vector3f(cam.getDirection().getX(),-0.80f,cam.getDirection().getZ()),new Vector3f(cam.getUp().getX(),1,cam.getUp().getZ()));
-
-
+          //flyCam.setRotationSpeed(1f);
+          //cam.lookAtDirection(new Vector3f(cam.getDirection().getX(),-0.80f,cam.getDirection().getZ()),new Vector3f(cam.getUp().getX(),1,cam.getUp().getZ()));
+          
+          
      }
      
      /* We over-write some navigational key mappings here, so we can
