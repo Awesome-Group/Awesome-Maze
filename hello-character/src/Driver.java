@@ -181,12 +181,6 @@ public class Driver extends SimpleApplication implements ActionListener
           // Sets the player walk direction and resets the cam location to where the player is now.
           player.setWalkDirection(walkDirection);
           cam.setLocation(player.getPhysicsLocation());
-          restrictCameraRotation();
-          
-          //xDirection.set(cam.getDirection().getX(), 0f, 0f );
-          //zDirection.set(sceneModel.getLocalTranslation().getX(), 0f, 0f);
-          //System.out.println(cam.getRotation());
-          //System.out.println(cam.getRotation());
      }
 
 
@@ -255,44 +249,7 @@ public class Driver extends SimpleApplication implements ActionListener
           rootNode.addLight(dl);
      }
      
-     
-     // Code doesn't work that well, needs changes
-     private void restrictCameraRotation()
-     {
-          // Restricts camera rotation for first person viewing
-          // May need to create a variable to store the y-axis at which the rotation should stop
-          
-          if ( cam.getRotation().getZ() > 0.5f && cam.getRotation().getY() < 0.87f )
-          {
-               cam.setRotation(new Quaternion(cam.getRotation().getX(), 0.87f, 0.5f, cam.getRotation().getW()));
-               
-               //Quaternion q = new Quaternion();
-               //Vector3f xDir = new Vector3f(cam.getDirection().getX(), 0f, 0f);
-               //float angle = xDir.angleBetween(new Vector3f(0, cam.getDirection().getY(), 0f));
-               //cam.setRotation(q.fromAngleAxis(angle, cam.getDirection()));
-          }
-          
-          
-          //else
-          //flyCam.setRotationSpeed(1f);
-          //cam.lookAtDirection(new Vector3f(cam.getDirection().getX(),0.80f,cam.getDirection().getZ()),new Vector3f(cam.getUp().getX(),1,cam.getUp().getZ()));
-          if ( cam.getRotation().getZ() < -0.5f && cam.getRotation().getY() < 0.87f )
-          {
-               cam.setRotation(new Quaternion(cam.getRotation().getX(), 0.87f, -0.5f, cam.getRotation().getW()));
-               //System.out.println(cam.getRotation());
-               //Quaternion q = new Quaternion();
-               //Vector3f xDir = new Vector3f(cam.getDirection().getX(), 0f, 0f);
-               //float angle = xDir.angleBetween(new Vector3f(0, cam.getDirection().getY(), 0f));
-               //cam.setRotation(q.fromAngleAxis(angle, cam.getDirection()));
-          }
-          
-          //else
-          //flyCam.setRotationSpeed(1f);
-          //cam.lookAtDirection(new Vector3f(cam.getDirection().getX(),-0.80f,cam.getDirection().getZ()),new Vector3f(cam.getUp().getX(),1,cam.getUp().getZ()));
-          
-          
-     }
-     
+
      /* We over-write some navigational key mappings here, so we can
       *  add physics-controlled walking and jumping:
       */
