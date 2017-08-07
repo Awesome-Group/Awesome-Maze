@@ -80,8 +80,10 @@ public class Driver extends SimpleApplication implements ActionListener
          */
           runSpeedFactor = 0.6f;
           walkSpeedFactor = 0.3f;
+          rotationSpeed = 1.2f;
           
           currentSpeedFactor = walkSpeedFactor;
+          flyCam.setRotationSpeed(rotationSpeed);
           
           // We re-use the flyby camera for rotation, while positioning is handled by physics
           viewPort.setBackgroundColor(new ColorRGBA(0.7f, 0.8f, 1f, 1f));
@@ -299,5 +301,6 @@ public class Driver extends SimpleApplication implements ActionListener
      private float walkSpeedFactor;
      private float runSpeedFactor;
      private float currentSpeedFactor;
+     private float rotationSpeed;
      
 }
