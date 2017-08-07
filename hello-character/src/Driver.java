@@ -19,6 +19,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.system.AppSettings;
+import com.jme3.texture.Texture;
 import custom.FlyByCamera;
 import javafx.scene.paint.Color;
 import org.lwjgl.Sys;
@@ -129,12 +130,14 @@ public class Driver extends SimpleApplication implements ActionListener
         sceneModel.setLocalScale(2f);
         sceneModel.setLocalTranslation(1, 1, 1);
         
-        // Added wall model - but it is not working
+        // Added test floor model
         wallModel = assetManager.loadModel("models/stonetiles.obj");
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setColor("Color", ColorRGBA.Brown);
+        mat.setTexture("ColorMap", assetManager.loadTexture("models/color.png"));
+        //mat.setTexture("NormalMap", assetManager.loadTexture("models/normals.png"));
         wallModel.setMaterial(mat);
-        wallModel.setLocalScale(50f);
+        //wallModel.setLocalScale(20f);
+        wallModel.setLocalScale(new Vector3f(50f, 80f, 50f));
         wallModel.setLocalTranslation(0f, 1.4f, -50f);
         wallModel.setLocalRotation(new Quaternion(-1f, 0f, 0f, 1f));
         CollisionShape wallShape = CollisionShapeFactory.createMeshShape(wallModel);
