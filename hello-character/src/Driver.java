@@ -108,7 +108,7 @@ public class Driver extends SimpleApplication implements ActionListener
         stateManager.attach(bulletAppState);
 
         /* These are the default run and walk speed factors. We also set the move speed according to
-         *  what mode are we on.
+         *  what mode are we on. Additionally, we can adjust the rotation speed of the mouse.
          */
         runSpeedFactor = 0.6f;
         walkSpeedFactor = 0.3f;
@@ -130,7 +130,7 @@ public class Driver extends SimpleApplication implements ActionListener
         sceneModel.setLocalTranslation(1, 1, 1);
         
         // Added wall model - but it is not working
-        wallModel = assetManager.loadModel("Models/stonetiles.obj");
+        wallModel = assetManager.loadModel("models/stonetiles.obj");
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.Brown);
         wallModel.setMaterial(mat);
