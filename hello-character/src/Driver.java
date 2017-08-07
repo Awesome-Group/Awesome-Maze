@@ -21,8 +21,35 @@ import com.jme3.system.AppSettings;
 import custom.FlyByCamera;
 import org.lwjgl.Sys;
 
+
 public class Driver extends SimpleApplication implements ActionListener
 {
+     private Spatial sceneModel;
+     private Spatial wallModel;
+     private BulletAppState bulletAppState;
+     private RigidBodyControl landscape;
+     private CharacterControl player;
+     private Vector3f walkDirection = new Vector3f();
+     private boolean
+             left = false,
+             right = false,
+             up = false,
+             down = false,
+             run = false;
+
+     //Temporary vectors used on each frame.
+     //They here to avoid instanciating new vectors on each frame.
+     private Vector3f camDir = new Vector3f();
+     private Vector3f camLeft = new Vector3f();
+
+     private Vector3f xDirection = new Vector3f();
+     private Vector3f zDirection = new Vector3f();
+
+     private float walkSpeedFactor;
+     private float runSpeedFactor;
+     private float currentSpeedFactor;
+     private float rotationSpeed;
+
      // public:
      
      
@@ -96,6 +123,9 @@ public class Driver extends SimpleApplication implements ActionListener
           sceneModel = assetManager.loadModel("main.scene");
           sceneModel.setLocalScale(2f);
           sceneModel.setLocalTranslation(1, 1, 1);
+
+          // Added wall model - but it is not working
+          wallModel = assetManager.loadModel("assets/Models/stonetiles.obj");
           
           // We set up collision detection for the scene by creating a
           // compound collision shape and a static RigidBodyControl with mass zero.
@@ -122,6 +152,7 @@ public class Driver extends SimpleApplication implements ActionListener
          *  control to the physics space for them to have physics.
          */
           rootNode.attachChild(sceneModel);
+          rootNode.attachChild(wallModel);
           bulletAppState.getPhysicsSpace().add(landscape);
           bulletAppState.getPhysicsSpace().add(player);
 
@@ -277,30 +308,5 @@ public class Driver extends SimpleApplication implements ActionListener
           inputManager.setCursorVisible(value);
           flyCam.setEnabled(!value);
      }
-     
-     private Spatial sceneModel;
-     private BulletAppState bulletAppState;
-     private RigidBodyControl landscape;
-     private CharacterControl player;
-     private Vector3f walkDirection = new Vector3f();
-     private boolean
-               left = false,
-               right = false,
-               up = false,
-               down = false,
-               run = false;
-     
-     //Temporary vectors used on each frame.
-     //They here to avoid instanciating new vectors on each frame.
-     private Vector3f camDir = new Vector3f();
-     private Vector3f camLeft = new Vector3f();
-     
-     private Vector3f xDirection = new Vector3f();
-     private Vector3f zDirection = new Vector3f();
-     
-     private float walkSpeedFactor;
-     private float runSpeedFactor;
-     private float currentSpeedFactor;
-     private float rotationSpeed;
      
 }
