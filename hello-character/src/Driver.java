@@ -12,6 +12,7 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
+import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
@@ -19,7 +20,10 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.system.AppSettings;
 import custom.FlyByCamera;
+import javafx.scene.paint.Color;
 import org.lwjgl.Sys;
+
+import java.rmi.MarshalException;
 
 
 public class Driver extends SimpleApplication implements ActionListener
@@ -28,6 +32,7 @@ public class Driver extends SimpleApplication implements ActionListener
     private Spatial wallModel;
     private BulletAppState bulletAppState;
     private RigidBodyControl landscape;
+    private RigidBodyControl wall;
     private CharacterControl player;
     private Vector3f walkDirection = new Vector3f();
     private boolean
@@ -126,6 +131,15 @@ public class Driver extends SimpleApplication implements ActionListener
         
         // Added wall model - but it is not working
         wallModel = assetManager.loadModel("Models/stonetiles.obj");
+        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.setColor("Color", ColorRGBA.Brown);
+        wallModel.setMaterial(mat);
+        wallModel.setLocalScale(50f);
+        wallModel.setLocalTranslation(0f, 1.4f, -50f);
+        wallModel.setLocalRotation(new Quaternion(-1f, 0f, 0f, 1f));
+        CollisionShape wallShape = CollisionShapeFactory.createMeshShape(wallModel);
+        wall = new RigidBodyControl(wallShape, 0);
+        wallModel.addControl(wall);
         
         // We set up collision detection for the scene by creating a
         // compound collision shape and a static RigidBodyControl with mass zero.
@@ -155,6 +169,7 @@ public class Driver extends SimpleApplication implements ActionListener
         rootNode.attachChild(wallModel);
         bulletAppState.getPhysicsSpace().add(landscape);
         bulletAppState.getPhysicsSpace().add(player);
+        bulletAppState.getPhysicsSpace().add(wall);
 
         /* The debug feature shows us the wireframes of the mesh renderer.
          * This should be enabled for debugging only.
