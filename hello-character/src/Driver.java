@@ -18,6 +18,7 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.jme3.system.AppSettings;
+import com.jme3.texture.Texture;
 import custom.FlyByCamera;
 
 
@@ -26,6 +27,7 @@ public class Driver extends SimpleApplication implements ActionListener
     private Spatial sceneModel;
     private Spatial wallModel;
     private Spatial stairs;
+    private Spatial testWallModel;
     private BulletAppState bulletAppState;
     private RigidBodyControl landscape;
     private RigidBodyControl wall;
@@ -151,7 +153,15 @@ public class Driver extends SimpleApplication implements ActionListener
         CollisionShape sceneShape = CollisionShapeFactory.createMeshShape(sceneModel);
         landscape = new RigidBodyControl(sceneShape, 0);
         sceneModel.addControl(landscape);
-        
+
+        // Adding another test floor model
+        testWallModel = assetManager.loadModel("models/Block-1x1x2.mesh.xml");
+        testWallModel.setLocalScale(2f);
+        testWallModel.setLocalTranslation(0f, 2f, 30f);
+        Material testMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        testMat.setTexture("ColorMap", assetManager.loadTexture("Textures/Terrain/BrickWall/BrickWall.jpg"));
+        testWallModel.setMaterial(testMat);
+
         // We set up collision detection for the player by creating
         // a capsule collision shape and a CharacterControl.
         // The CharacterControl offers extra settings for
@@ -173,6 +183,7 @@ public class Driver extends SimpleApplication implements ActionListener
         rootNode.attachChild(sceneModel);
         rootNode.attachChild(wallModel);
         rootNode.attachChild(stairs);
+        rootNode.attachChild(testWallModel);
         bulletAppState.getPhysicsSpace().add(landscape);
         bulletAppState.getPhysicsSpace().add(player);
         bulletAppState.getPhysicsSpace().add(wall);
