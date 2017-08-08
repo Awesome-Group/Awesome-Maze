@@ -146,14 +146,14 @@ public class Driver extends SimpleApplication implements ActionListener
         //mat2.setTexture("ColorMap", assetManager.loadTexture("models/color.png"));
         //stairs.setMaterial(mat2);
         //Material mat2 = new Material(assetManager, "models/Stairs2.mtl");
-        stairs.setLocalTranslation(1f,0f,0f);
+        stairs.setLocalTranslation(1f, 0f, 0f);
         
         // We set up collision detection for the scene by creating a
         // compound collision shape and a static RigidBodyControl with mass zero.
         CollisionShape sceneShape = CollisionShapeFactory.createMeshShape(sceneModel);
         landscape = new RigidBodyControl(sceneShape, 0);
         sceneModel.addControl(landscape);
-
+        
         // Adding another test floor model
         testWallModel = assetManager.loadModel("models/Block-1x1x2.mesh.xml");
         testWallModel.setLocalScale(2f);
@@ -161,7 +161,7 @@ public class Driver extends SimpleApplication implements ActionListener
         Material testMat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         testMat.setTexture("ColorMap", assetManager.loadTexture("Textures/Terrain/BrickWall/BrickWall.jpg"));
         testWallModel.setMaterial(testMat);
-
+        
         // We set up collision detection for the player by creating
         // a capsule collision shape and a CharacterControl.
         // The CharacterControl offers extra settings for
