@@ -16,21 +16,16 @@ import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.system.AppSettings;
-import com.jme3.texture.Texture;
 import custom.FlyByCamera;
-import javafx.scene.paint.Color;
-import org.lwjgl.Sys;
-
-import java.rmi.MarshalException;
 
 
 public class Driver extends SimpleApplication implements ActionListener
 {
     private Spatial sceneModel;
     private Spatial wallModel;
+    private Spatial stairs;
     private BulletAppState bulletAppState;
     private RigidBodyControl landscape;
     private RigidBodyControl wall;
@@ -95,7 +90,7 @@ public class Driver extends SimpleApplication implements ActionListener
         
         if ( stateManager.getState(custom.FlyCamAppState.class) != null )
         {
-            flyCam = new FlyByCamera(cam);
+            flyCam = new custom.FlyByCamera(cam);
             flyCam.setMoveSpeed(1f); // odd to set this here but it did it before
             stateManager.getState(custom.FlyCamAppState.class).setCamera(flyCam);
         }
@@ -111,8 +106,8 @@ public class Driver extends SimpleApplication implements ActionListener
         /* These are the default run and walk speed factors. We also set the move speed according to
          *  what mode are we on. Additionally, we can adjust the rotation speed of the mouse.
          */
-        runSpeedFactor = 0.6f;
-        walkSpeedFactor = 0.3f;
+        runSpeedFactor = 1.0f;
+        walkSpeedFactor = 0.5f;
         rotationSpeed = 1.2f;
         
         currentSpeedFactor = walkSpeedFactor;
@@ -137,12 +132,19 @@ public class Driver extends SimpleApplication implements ActionListener
         //mat.setTexture("NormalMap", assetManager.loadTexture("models/normals.png"));
         wallModel.setMaterial(mat);
         //wallModel.setLocalScale(20f);
-        wallModel.setLocalScale(new Vector3f(50f, 80f, 50f));
-        wallModel.setLocalTranslation(0f, 1.4f, -50f);
+        wallModel.setLocalScale(new Vector3f(50f, 50f, 50f));
+        wallModel.setLocalTranslation(0.0f, 1.0f, -50f);
         wallModel.setLocalRotation(new Quaternion(-1f, 0f, 0f, 1f));
         CollisionShape wallShape = CollisionShapeFactory.createMeshShape(wallModel);
-        wall = new RigidBodyControl(wallShape, 0);
-        wallModel.addControl(wall);
+        //wall = new RigidBodyControl(wallShape, 0);
+        //wallModel.addControl(wall);
+        
+        // Added test floor model
+        stairs = assetManager.loadModel("models/Stairs2.obj");
+        //mat2.setTexture("ColorMap", assetManager.loadTexture("models/color.png"));
+        //stairs.setMaterial(mat2);
+        //Material mat2 = new Material(assetManager, "models/Stairs2.mtl");
+        stairs.setLocalTranslation(1f,0f,0f);
         
         // We set up collision detection for the scene by creating a
         // compound collision shape and a static RigidBodyControl with mass zero.
@@ -170,6 +172,7 @@ public class Driver extends SimpleApplication implements ActionListener
          */
         rootNode.attachChild(sceneModel);
         rootNode.attachChild(wallModel);
+        rootNode.attachChild(stairs);
         bulletAppState.getPhysicsSpace().add(landscape);
         bulletAppState.getPhysicsSpace().add(player);
         bulletAppState.getPhysicsSpace().add(wall);
