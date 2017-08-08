@@ -28,6 +28,7 @@ public class Driver extends SimpleApplication implements ActionListener
     private Spatial wallModel;
     private Spatial stairs;
     private Spatial testWallModel;
+    private Spatial anotherWall;
     private BulletAppState bulletAppState;
     private RigidBodyControl landscape;
     private RigidBodyControl wall;
@@ -164,6 +165,11 @@ public class Driver extends SimpleApplication implements ActionListener
         CollisionShape testWallShape = CollisionShapeFactory.createBoxShape(testWallModel);
         wall = new RigidBodyControl(testWallShape, 0f);
         testWallModel.addControl(wall);
+
+        // Another test model
+        anotherWall = assetManager.loadModel("models/custom wall/wall.j3o");
+        anotherWall.setLocalScale(20f);
+
         
         // We set up collision detection for the player by creating
         // a capsule collision shape and a CharacterControl.
@@ -187,6 +193,7 @@ public class Driver extends SimpleApplication implements ActionListener
         rootNode.attachChild(wallModel);
         rootNode.attachChild(stairs);
         rootNode.attachChild(testWallModel);
+        rootNode.attachChild(anotherWall);
         bulletAppState.getPhysicsSpace().add(landscape);
         bulletAppState.getPhysicsSpace().add(player);
         bulletAppState.getPhysicsSpace().add(wall);
